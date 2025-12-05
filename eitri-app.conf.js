@@ -1,0 +1,16 @@
+module.exports = {
+  "name": "eitri-shopping-addons-deeplink-resolver-wake",
+  "title": "eitri-shopping-addons-deeplink-resolver-wake",
+  "slug": "eitri-shopping-addons-deeplink-resolver-wake",
+  "eitri-luminus": "1.84.0",
+  "eitri-bifrost": "4.4.0",
+  "eitri-commons": "2.2.0",
+  "version": "0.1.0",
+  "public-key": "b40c2785-3710-4b47-a1c2-8b118671bcc9",
+  "applicationId": "5e5c15f7-65cc-4c57-96b0-cbd55ddcbc5b",
+  "id": "b2186396-faa7-4448-a896-6469d43cf3db",
+  "organizationId": "cf5660ee-bf90-42cd-9a43-9d2c69ee3c89",
+  "organization": {},
+  "type": "module",
+  "check-js": false
+}
