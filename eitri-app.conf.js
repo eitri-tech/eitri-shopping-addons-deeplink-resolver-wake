@@ -1,7 +1,7 @@
 module.exports = {
   "name": "eitri-shopping-addons-deeplink-resolver-wake",
   "title": "eitri-shopping-addons-deeplink-resolver-wake",
-  "slug": "eitri-shopping-addons-deeplink-resolver-wake",
+  "slug": "deeplink-resolver-wake",
   "eitri-luminus": "2.7.1",
   "eitri-bifrost": "3.12.2",
   "eitri-commons": "2.2.0",
