@@ -72,7 +72,8 @@ async function getPublishedVersions(eitriAppId, token) {
 }
 
 function getProjectConfig(project, directoryPath) {
-	const configPath = path.join(directoryPath, `./${project}/eitri-app.conf.js`)
+	// const configPath = path.join(directoryPath, `./${project}/eitri-app.conf.js`)
+	const configPath = path.join(directoryPath, `./eitri-app.conf.js`)
 	if (!fs.existsSync(configPath)) {
 		throw new Error(`Arquivo de configuração não encontrado: ${configPath}`)
 	}
@@ -132,7 +133,8 @@ async function checkAndPushInDirectory(directoryPath, token) {
 	let hasError = false
 
 	try {
-		const projects = listProjects(directoryPath)
+		// const projects = listProjects(directoryPath)
+		const projects = ['eitri-shopping-addons-deeplink-resolver-wake']
 		// console.log('Projetos encontrados:', projects)
 
 		const updatedProjects = []
