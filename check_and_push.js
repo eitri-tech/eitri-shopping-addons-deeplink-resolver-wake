@@ -2,6 +2,8 @@ const { execSync } = require('child_process')
 const fs = require('fs')
 const path = require('path')
 
+// VERSÃO REPOSITORIO UNICO
+
 const MANAGER_URL = 'https://api.eitri.tech/eitri-manager-api/v2/revisions?eitriAppId='
 const BLIND_GUARDIAN_URL = 'https://api.eitri.tech/blind-guardian-api/v2/o/auth'
 const DEV_ENV_ID = '' // id=Dev não pode ser o código do ambiente, deve ser o ID
@@ -100,7 +102,8 @@ function isVersionGreater(localVersion, publishedVersion) {
 
 async function publishProject(project, directoryPath, sharedVersion = false, message = '') {
 	// Caminho absoluto para o diretório do projeto
-	const projectPath = path.resolve(directoryPath, `./${project}`)
+	// const projectPath = path.resolve(directoryPath, `./${project}`)
+	const projectPath = path.resolve(directoryPath)
 
 	// Muda para o diretório do projeto
 	process.chdir(projectPath)
@@ -114,7 +117,7 @@ async function publishProject(project, directoryPath, sharedVersion = false, mes
 	}
 
 	// Volta para o diretório original (opcional)
-	process.chdir(directoryPath)
+	// process.chdir(directoryPath)
 }
 
 function generateGitTag(project, version) {
