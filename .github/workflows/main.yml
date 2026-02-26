@@ -35,10 +35,3 @@ jobs:
           echo "Executando script..."
           npm install -g eitri-cli
           node check_and_push.js
-
-      - name: Configurar credenciais AWS
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.S3_VTEX_CMS_JSON_ID }}
-          aws-secret-access-key: ${{ secrets.S3_VTEX_CMS_JSON_KEY }}
-          aws-region: us-east-1
