@@ -3,14 +3,13 @@ import { Wake } from 'eitri-shopping-wake-shared'
 import { getUrlType, openEitriApp, openHome, openProduct, openRedirectLinkBrowser } from './NavigationService'
 import { URI_TYPE } from './Constants'
 
-const resolveDeeplinkRoot = deeplink => {
+const resolveDeeplinkRoot = async deeplink => {
 	const domain = Wake?.configs?.domain
 	if (!domain) return false
 
 	const isRoot = new RegExp(`^https?:\/\/${domain}\/?(\\?.*)?$`).test(deeplink)
 	if (isRoot) {
-		Eitri.close()
-
+		await Eitri.exposedApis.appState.goHome()
 		return true
 	}
 	return false
@@ -171,11 +170,12 @@ const resolveDeeplinkToProductCatalog = async deeplink => {
 			console.log('É HOTSITE')
 			openEitriApp('home', { url: finalUrl, route: 'Hotsite' })
 			return true
-		} else if (pageType?.kind === URI_TYPE.NOT_FOUND) {
-			console.log('É NOT_FOUND')
-			openEitriApp('home', { route: 'ErrorNotFound' })
-			return true
 		}
+		// else if (pageType?.kind === URI_TYPE.NOT_FOUND) {
+		// 	console.log('É NOT_FOUND')
+		// 	openEitriApp('home', { route: 'ErrorNotFound' })
+		// 	return true
+		// }
 
 		return false
 	} catch (error) {
@@ -202,6 +202,9 @@ const resolveDeeplinkToCheckout = deeplink => {
 
 		let cartId = null
 
+		if (segments[1]) {
+			cartId = segments[1]
+		}
 		if (queryParams) {
 			const params = new URLSearchParams(queryParams)
 			if (params.has('checkoutId')) {

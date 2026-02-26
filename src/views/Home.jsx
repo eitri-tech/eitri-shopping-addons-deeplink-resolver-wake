@@ -75,8 +75,13 @@ export default function Home(props) {
 			await resolveDeeplinkStartParams(deeplink)
 
 			if (deeplink) {
-				if (deeplink.startsWith('http')) {
-					await resolveDeeplinkPath(deeplink)
+				if (deeplink.startsWith('http') || deeplink.startsWith('www')) {
+					let newDeeplink = deeplink
+					if (newDeeplink.startsWith('www')) {
+						newDeeplink = `https://${deeplink}`
+					}
+					
+					await resolveDeeplinkPath(newDeeplink)
 					return
 				} else {
 					await resolveUriDeeplinkScheme(deeplink)
