@@ -1,6 +1,6 @@
 import Eitri from 'eitri-bifrost'
 import { Wake } from 'eitri-shopping-wake-shared'
-import { getUrlType, openEitriApp, openHome, openProduct, openRedirectLinkBrowser } from './NavigationService'
+import { closeEitriApp, getUrlType, openEitriApp, openHome, openProduct, openRedirectLinkBrowser } from './NavigationService'
 import { URI_TYPE } from './Constants'
 
 const resolveDeeplinkRoot = async deeplink => {
@@ -225,7 +225,7 @@ const resolveDeeplinkToCheckout = deeplink => {
 
 const resolveStoreLinks = deeplink => {
 	if (deeplink.includes('play.google') || deeplink.includes('app.apple')) {
-		Eitri.close()
+		closeEitriApp()
 		return true
 	}
 	return false
@@ -275,9 +275,9 @@ export const resolveDeeplinkPath = async deeplink => {
 				console.error('Erro ao processar o deep link', error)
 			}
 		}
-		Eitri.close()
+		closeEitriApp()
 	} catch (error) {
 		console.error('Erro ao processar o deep link', error)
-		Eitri.close()
+		closeEitriApp()
 	}
 }

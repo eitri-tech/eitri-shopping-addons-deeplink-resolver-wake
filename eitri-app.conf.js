@@ -5,7 +5,7 @@ module.exports = {
   "eitri-luminus": "2.7.1",
   "eitri-bifrost": "3.12.2",
   "eitri-commons": "2.2.0",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "messageVersion": "fix fechamento de app e concorrencia",
   "public-key": "b40c2785-3710-4b47-a1c2-8b118671bcc9",
   "applicationId": "5e5c15f7-65cc-4c57-96b0-cbd55ddcbc5b",

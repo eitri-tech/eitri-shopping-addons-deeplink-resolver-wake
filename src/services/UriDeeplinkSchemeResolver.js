@@ -1,6 +1,6 @@
 import Eitri from 'eitri-bifrost'
 import { resolveDeeplinkFromRemoteConfig } from './DeeplinkResolver'
-import { openAccount, openBrowser, openCart, openEitriApp, openHotsiteUrl, openProduct, openSearchUrl } from './NavigationService'
+import { closeEitriApp, openAccount, openBrowser, openCart, openEitriApp, openHotsiteUrl, openProduct, openSearchUrl } from './NavigationService'
 import { getProductById } from './ProductService'
 
 const resolveDeeplinkToProduct = async deeplink => {
@@ -99,13 +99,13 @@ export const resolveUriDeeplinkScheme = async deeplink => {
 	const [, fullPath] = deeplink.split('://')
 
 	if (!fullPath) {
-		Eitri.close()
+		closeEitriApp()
 		return
 	}
 
 	let [path, queryString] = fullPath.split('?')
 	if (!path) {
-		Eitri.close()
+		closeEitriApp()
 		return
 	}
 	
@@ -117,7 +117,7 @@ export const resolveUriDeeplinkScheme = async deeplink => {
 			await openProduct(productId)
 			return
 		}
-		Eitri.close()
+		closeEitriApp()
 		return
 	}
 
@@ -128,7 +128,7 @@ export const resolveUriDeeplinkScheme = async deeplink => {
 			await openProduct(productId)
 			return
 		}
-		Eitri.close()
+		closeEitriApp()
 		return
 	}
 
@@ -147,7 +147,7 @@ export const resolveUriDeeplinkScheme = async deeplink => {
 	}
 
 	if (path === 'home') {
-		Eitri.close()
+		closeEitriApp()
 		return
 	}
 	
@@ -165,7 +165,7 @@ export const resolveUriDeeplinkScheme = async deeplink => {
 	if (path.startsWith('webview/')) {
 		const url = path.replace(/^(webview\/)/i, '')
 
-		if (url.startsWith('inapp/')) {
+		if (url?.startsWith('inapp/')) {
 			const formatedUrl = decodeURIComponent(url.replace(/^inapp\//i, ''))
 			openBrowser(formatedUrl, true)
 			
@@ -175,5 +175,5 @@ export const resolveUriDeeplinkScheme = async deeplink => {
 		return
 	}
 
-	Eitri.close()
+	closeEitriApp()
 }
