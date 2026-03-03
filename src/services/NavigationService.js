@@ -32,14 +32,14 @@ export const detachUrl = url => {
  */
 export const openProduct = async productId => {
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug: 'pdp',
 			initParams: { productId },
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to PDP: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
@@ -78,7 +78,7 @@ export const openHome = async deeplink => {
 		}
 
 		if (deeplink) {
-			Eitri.navigation.open({
+			eitriNavigationOpen({
 				slug: 'home',
 				initParams: { params, route: 'ProductCatalog' },
 				replace: true
@@ -86,19 +86,19 @@ export const openHome = async deeplink => {
 		}
 	} catch (e) {
 		console.error('navigate to Home: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
 export const openCheckout = async () => {
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug: 'checkout',
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to Checkout: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
@@ -174,54 +174,54 @@ export const navigateHome = async (facets, title, type) => {
 	}
 
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug: 'home',
 			initParams: initParams,
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to Home: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
 export const navigateSearch = async value => {
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug: 'home',
 			initParams: { searchTerm: value, route: 'Search' },
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to Home: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
 export const navigateToCategory = async (category, title) => {
 	const normalizedPath = normalizePath(category)
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug: 'home',
 			initParams: { params: normalizedPath, route: 'ProductCatalog', title },
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to Home: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
 export const openEitriApp = async (slug, params) => {
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug,
 			initParams: params,
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to Home: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
@@ -234,16 +234,16 @@ export const openRedirectLinkBrowser = async deeplink => {
 			url: url,
 			inApp: false
 		})
-		Eitri.close()
+		closeEitriApp()
 	} catch (error) {
 		console.error('Erro ao processar o deep link de busca', error)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
 export const openBrowser = async (url, inApp = true) => {
 	try {
-		if (!url) Eitri.close()
+		if (!url) closeEitriApp()
 
 		await Eitri.openBrowser({
 			url: url,
@@ -251,61 +251,78 @@ export const openBrowser = async (url, inApp = true) => {
 		})
 		
 		if (!inApp) {
-			Eitri.close()
+			closeEitriApp()
 		}
 	} catch (error) {
 		console.error('Erro ao processar o deep link de busca', error)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
 export const openCart = async (checkoutId = '') => {
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug: 'cart',
 			initParams: { checkoutId },
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to Cart: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
 export const openAccount = async () => {
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug: 'account',
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to Cart: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
 export const openHotsiteUrl = async (hotsiteUrl) => {
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug: 'home',
 			initParams: { route: 'hotsite', url: hotsiteUrl },
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to Cart: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
 }
 
 export const openSearchUrl = async (term, queryString = '') => {
 	try {
-		Eitri.navigation.open({
+		eitriNavigationOpen({
 			slug: 'home',
 			initParams: { route: 'search', value:term, queryString },
 			replace: true
 		})
 	} catch (e) {
 		console.error('navigate to Cart: Error', e)
-		Eitri.close()
+		closeEitriApp()
 	}
+}
+
+let appIsOpen = true
+// centralizando Eitri.navigation.open, para melhorar debug de codigo
+export const eitriNavigationOpen = params => {
+	if (appIsOpen) {
+		// console.log('eitriNavigationOpen', params)
+		return Eitri.navigation.open(params)
+	} 
+}
+
+// centralizando Eitri.close, correção para condição de corrida
+export const closeEitriApp = async () => {
+	if (appIsOpen) {
+		appIsOpen = false
+		await Eitri.close()
+	} 
 }
