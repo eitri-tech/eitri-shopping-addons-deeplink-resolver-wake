@@ -242,6 +242,11 @@ export const resolveDeeplinkFromRemoteConfig = deeplink => {
 	})
 
 	if (matchedDeeplink) {
+		if (matchedDeeplink.forceWeb) {
+			openRedirectLinkBrowser(matchedDeeplink.forceWeb, false)
+			return true
+		}
+
 		openEitriApp(matchedDeeplink.slug, matchedDeeplink.params)
 		return true
 	} else {
@@ -264,9 +269,8 @@ export const resolveDeeplinkPath = async deeplink => {
 	try {
 		for (const way of deeplinkWays) {
 			try {
-				let result = await way(deeplink)
 				console.log('[DEEPLINK (resolveDeeplinkPath)] WAY', way.name)
-				console.log('[DEEPLINK (resolveDeeplinkPath)] result', result)
+				let result = await way(deeplink)
 
 				if (result) {
 					return true

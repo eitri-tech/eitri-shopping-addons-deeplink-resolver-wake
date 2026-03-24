@@ -225,14 +225,29 @@ export const openEitriApp = async (slug, params) => {
 	}
 }
 
-export const openRedirectLinkBrowser = async deeplink => {
+export const openRedirectLinkBrowser = async (deeplink, inApp = false) => {
 	try {
-		console.log('openRedirectLinkBrowser')
-		let url = `https://faststore-cms.s3.us-east-1.amazonaws.com/redirect.html?link=${btoa(deeplink)}`
+		const { applicationData } = await Eitri.getConfigs()
+
+		let url
+		if (applicationData.platform === "ios") {
+			url = deeplink
+		} else {
+			const config = await Eitri.environment.getRemoteConfigs()
+			const deepLinkDomain = getDomain(deeplink)
+			const storeDomain = getDomain(config.providerInfo.host || config.providerInfo.domain)
+
+			if (deepLinkDomain === storeDomain) {
+				const encodedUrl = btoa(unescape(encodeURIComponent(deeplink)))
+				url = `https://faststore-cms.s3.us-east-1.amazonaws.com/redirectIntent.html?link=${encodedUrl}`
+			} else {
+				url = deeplink
+			}
+		}
 
 		Eitri.openBrowser({
 			url: url,
-			inApp: false
+			inApp
 		})
 		closeEitriApp()
 	} catch (error) {
@@ -325,4 +340,13 @@ export const closeEitriApp = async () => {
 		appIsOpen = false
 		await Eitri.close()
 	} 
+}
+
+export const getDomain = (url) => {
+	try {
+		const { hostname } = new URL(url)
+		return hostname?.toLowerCase()
+	} catch (e) {
+		return null
+	}
 }
