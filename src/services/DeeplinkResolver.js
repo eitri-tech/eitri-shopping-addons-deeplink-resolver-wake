@@ -1,6 +1,6 @@
 import Eitri from 'eitri-bifrost'
 import { Wake } from 'eitri-shopping-wake-shared'
-import { closeEitriApp, getUrlType, openEitriApp, openHome, openProduct, openRedirectLinkBrowser } from './NavigationService'
+import { closeEitriApp, getUrlType, openEitriApp, openProduct, openRedirectLinkBrowser, openWebFlow } from './NavigationService'
 import { URI_TYPE } from './Constants'
 
 const resolveDeeplinkRoot = async deeplink => {
@@ -243,7 +243,7 @@ export const resolveDeeplinkFromRemoteConfig = deeplink => {
 
 	if (matchedDeeplink) {
 		if (matchedDeeplink.forceWeb) {
-			openRedirectLinkBrowser(matchedDeeplink.forceWeb, matchedDeeplink.inApp)
+			openWebFlow(matchedDeeplink.forceWeb)
 			return true
 		}
 
