@@ -6,3 +6,6 @@ export const URI_TYPE = {
 	PARTNER: 'PARTNER',
 	BUY_LIST: 'BUY_LIST'
 }
+
+/** Chave bare no sharedStorage — mesma usada por apps Wake (ex.: shop2gether) */
+export const UTM_PARAMS_KEY = 'utm_params_key'

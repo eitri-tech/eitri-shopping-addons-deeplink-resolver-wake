@@ -158,6 +158,49 @@ Where:
 }
 ```
 
+### UTM parameters and Firebase/GA4 attribution
+
+When the app opens from a deep link (HTTP, universal link, or app scheme) or from a push with `action`/`value`, the resolver:
+
+1. Reads campaign parameters from the query string (or push `startParams`)
+2. Persists them in `sharedStorage` under `utm_params_key`
+3. Sends the Firebase/GA4 `campaign_details` event (source, medium, campaign, etc.) so the session and `purchase` inherit the campaign
+
+#### Expected parameters (agency / CRM / ads)
+
+| Parameter | Use |
+| --- | --- |
+| `utm_source` | Source (e.g. `google`, `meta`, `crm`) |
+| `utm_medium` | Medium (e.g. `cpc`, `push`, `email`, `whatsapp`) |
+| `utm_campaign` | Campaign name |
+| `utm_content` | Creative variant (optional) |
+| `utm_term` | Term (optional) |
+| `gclid` | Google Ads click id (CPC) |
+| `fbclid` | Meta click id (when present) |
+| `awc` | Awin — mapped to `utm_campaign` |
+
+#### Link examples
+
+Push / CRM:
+
+```text
+https://<store-host>/product/sku-123?utm_source=crm&utm_medium=push&utm_campaign=black_friday_2026
+```
+
+Google Ads:
+
+```text
+https://<store-host>/category/shoes?utm_source=google&utm_medium=cpc&utm_campaign=search_brand&gclid=EAIaIQobChMI...
+```
+
+App scheme (same query):
+
+```text
+mystore://product/sku-123?utm_source=crm&utm_medium=whatsapp&utm_campaign=reactivation
+```
+
+> For pushes, if UTMs arrive as initialization fields (not in a URL), the resolver also captures them — as long as keys contain `utm` (or the click ids above).
+
 ### Creating Your Own Deeplink Resolver
 
 If remote configuration customizations do not meet your needs, you can also create your own Eitri-app for handling deeplinks.

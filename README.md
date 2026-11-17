@@ -158,6 +158,49 @@ Onde:
 ```
 
 
+### Parâmetros UTM e atribuição no Firebase/GA4
+
+Ao abrir o app por deep link (HTTP, universal link ou scheme do app) ou por push com `action`/`value`, o resolver:
+
+1. Lê os parâmetros de campanha da query (ou dos `startParams` do push)
+2. Persiste em `sharedStorage` na chave `utm_params_key`
+3. Envia o evento Firebase/GA4 `campaign_details` (source, medium, campaign, etc.), para que a sessão e o `purchase` herdem a origem
+
+#### Parâmetros esperados (agência / CRM / ads)
+
+| Parâmetro | Uso |
+| --- | --- |
+| `utm_source` | Origem (ex.: `google`, `meta`, `crm`) |
+| `utm_medium` | Meio (ex.: `cpc`, `push`, `email`, `whatsapp`) |
+| `utm_campaign` | Nome da campanha |
+| `utm_content` | Variante do criativo (opcional) |
+| `utm_term` | Termo (opcional) |
+| `gclid` | Click id Google Ads (CPC) |
+| `fbclid` | Click id Meta (quando houver) |
+| `awc` | Awin — mapeado para `utm_campaign` |
+
+#### Exemplos de link
+
+Push / CRM:
+
+```text
+https://<host-da-loja>/produto/sku-123?utm_source=crm&utm_medium=push&utm_campaign=black_friday_2026
+```
+
+Anúncio Google Ads:
+
+```text
+https://<host-da-loja>/categoria/calcados?utm_source=google&utm_medium=cpc&utm_campaign=search_brand&gclid=EAIaIQobChMI...
+```
+
+Scheme do app (mesma query):
+
+```text
+minhaloja://produto/sku-123?utm_source=crm&utm_medium=whatsapp&utm_campaign=reativacao
+```
+
+> Em pushes, se os UTMs vierem como campos nos parâmetros de inicialização (e não na URL), o resolver também os captura — desde que as chaves contenham `utm` (ou os click ids acima).
+
 ### Criando seu próprio Deeplink Resolver
 
 Caso as personalizações via configuração remota não atendam suas necessidades, é possível tambem criar seu próprio Eitri-app de tratamento de deeplinks.
